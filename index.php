@@ -1,13 +1,13 @@
 <?php
-require('controller.php');
+require('controller/controller.php');
 
 if (isset($_GET['action'])) {
-    if ($_GET['action'] == 'listArticles') {
-        listArticles();
+    if ($_GET['action'] == 'listChapters') {
+        listChapters();
     }
-    elseif ($_GET['action'] == 'articleWcomments') {
+    elseif ($_GET['action'] == 'listPosts') {
         if (isset($_GET['id']) && $_GET['id'] > 0) {
-            articleWcomments();
+            listPosts();
         }
         else {
             echo 'Erreur : aucun identifiant de billet envoyé';
@@ -15,5 +15,5 @@ if (isset($_GET['action'])) {
     }
 }
 else {
-    listArticles();
+    listChapters();
 }
