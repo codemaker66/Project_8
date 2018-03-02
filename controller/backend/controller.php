@@ -11,8 +11,39 @@ class Controller extends USER
 
 		if($login->is_loggedin()!="")
 		{
-			$model = new Model();
-            $req = $model->getChapters();
+			
+			$messagesParPage=5; //Nous allons afficher 5 messages par page.
+ 
+        $all = new Model();
+        $total = $all->getAll();
+
+                //Nous allons maintenant compter le nombre de pages.
+        $nombreDePages=ceil($total/$messagesParPage);
+
+         
+        if(isset($_GET['page'])) // Si la variable $_GET['page'] existe...
+        {
+             $pageActuelle=intval($_GET['page']);
+         
+             if($pageActuelle>$nombreDePages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
+             {
+                  $pageActuelle=$nombreDePages;
+             }
+        }
+        else // Sinon
+        {
+             $pageActuelle=1; // La page actuelle est la n°1    
+        }
+
+   
+        $premiereEntree=($pageActuelle-1)*$messagesParPage; // On calcul la première entrée à lire
+
+
+
+        $model = new Model();
+        $req = $model->getChapters($premiereEntree, $messagesParPage);
+
+
             $model = new Model();
             $comments = $model->getAllComments();
 			require('view/backend/view.php');
@@ -21,7 +52,7 @@ class Controller extends USER
 		elseif(!$login->is_loggedin())
 		{
 			// session no set redirects to login page
-			require('view/backend/login.php');
+			require('view/frontend/login.php');
 		}
 
 	}
@@ -32,8 +63,38 @@ class Controller extends USER
 
 		if($login->doLogin($uname,$umail,$upass))
 		{
-			$model = new Model();
-            $req = $model->getChapters();
+			
+			$messagesParPage=5; //Nous allons afficher 5 messages par page.
+ 
+        $all = new Model();
+        $total = $all->getAll();
+
+                //Nous allons maintenant compter le nombre de pages.
+        $nombreDePages=ceil($total/$messagesParPage);
+
+         
+        if(isset($_GET['page'])) // Si la variable $_GET['page'] existe...
+        {
+             $pageActuelle=intval($_GET['page']);
+         
+             if($pageActuelle>$nombreDePages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
+             {
+                  $pageActuelle=$nombreDePages;
+             }
+        }
+        else // Sinon
+        {
+             $pageActuelle=1; // La page actuelle est la n°1    
+        }
+
+   
+        $premiereEntree=($pageActuelle-1)*$messagesParPage; // On calcul la première entrée à lire
+
+
+
+        $model = new Model();
+        $req = $model->getChapters($premiereEntree, $messagesParPage);
+
             $model = new Model();
             $comments = $model->getAllComments();
 			require('view/backend/view.php');
@@ -41,7 +102,7 @@ class Controller extends USER
 		else
 		{
 			$error = "Wrong Details !";
-			require('view/backend/login.php');
+			require('view/frontend/login.php');
 		}	
 
 	}

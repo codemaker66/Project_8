@@ -33,10 +33,19 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="index.php">Home</a>
+              <a class="nav-link" target="_black" href="index.php">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.html">About</a>
+              <a class="nav-link" href="#">create</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">save</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="admin.php?action=comments">comments</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="admin.php?action=logout">logout</a>
             </li>
           </ul>
         </div>

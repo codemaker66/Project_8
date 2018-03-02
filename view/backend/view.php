@@ -1,4 +1,5 @@
-<?php
+<?php $title = 'AdminPanel';
+
   require_once(__DIR__ ."/../../controller/backend/controller.php");
   $session = new USER();
   if(!$session->is_loggedin())
@@ -7,32 +8,28 @@
     $session->redirect('../../index.php');
   }
 ?>
-<!DOCTYPE html>
-<html lang="fr">
 
-  <head>
+<?php ob_start(); ?>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Page Header -->
+    <header class="masthead" style="background-image: url('public/img/home-bg.jpg')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1>Clean Blog</h1>
+              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-    <title>welcome</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-
-    <!-- Custom styles for this template -->
-    <link href="public/css/clean-blog.min.css" rel="stylesheet">
-  
-  </head>
-
-<body>
-
-  <div class="container">
+  <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
      
      <table class="table table-bordered">
   <thead>
@@ -62,68 +59,31 @@ $req->closeCursor();
 ?>   
   </tbody>
 </table>
-
-
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">author</th>
-      <th scope="col">creation_date</th>
-      <th scope="col">comment</th>
-      <th scope="col">delete</th>
-    </tr>
-  </thead>
-  <tbody>
-      <?php
-while ($comment = $comments->fetch())
+<?php
+echo '<p align="center">Page : '; //Pour l'affichage, on centre la liste des pages
+for($i=1; $i<=$nombreDePages; $i++) //On fait notre boucle
 {
+     //On va faire notre condition
+     if($i==$pageActuelle) //Si il s'agit de la page actuelle...
+     {
+         echo ' [ '.$i.' ] '; 
+     }  
+     else //Sinon...
+     {
+          echo ' <a href="admin.php?action=admin&amp;page='.$i.'">'.$i.'</a> ';
+     }
+}
+echo '</p>';
 ?>
-<tr>
-      <th scope="row"><?= $comment['id']; ?></th>
-      <td><?= htmlspecialchars($comment['author']); ?></td>
-      <td><?= $comment['comment_date_fr']; ?></td>
-      <td><?=htmlspecialchars($comment['comment']); ?></td>
-      <td>delete</td>
-    </tr>
-      <?php
-} 
-$comments->closeCursor();
-?>   
-  </tbody>
-</table>
-
-
-          
 
 
 
-
-     
-        
-    
-
-
-          <a href="admin.php?action=logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Sign Out</a>
        
         </div>
+      </div>
+    </div>
+    <hr>
 
-<script language="JavaScript" type="text/javascript">
-function delpost(id, title)
-{
-  if (confirm("Are you sure you want to delete '" + title + "'"))
-  {
-      window.location.href = 'admin.php?delpost=' + id;
-  }
-}
-</script>
+<?php $content = ob_get_clean(); ?>
 
-<!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="public/js/clean-blog.min.js"></script>
-
-</body>
-</html>
+<?php require('template.php'); ?>

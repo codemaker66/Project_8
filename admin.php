@@ -26,13 +26,13 @@ if (isset($_GET['action'])) {
             }
       else
       {
-        echo "il y'a eu une erreur l'or du chargement de la page";
+        require('view/frontend/error.php');
       }
 
 }
 else
 {
-  echo "Vous n'avez pas le droit de faire";
+  require('view/frontend/error.php');
 }
 
 ?>

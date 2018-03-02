@@ -28,7 +28,8 @@ if (isset($_GET['action'])) {
     }
     else{
 
-        echo "erreur 404";
+        require('view/frontend/error.php');
+        
     }   
 
 

@@ -5,13 +5,27 @@ require_once(__DIR__ . "/../dbManager.php");
 class Model extends Manager {
 
 
-	 public function getChapters()
+	public function getAll()
+	{
+		$db = $this->dbConnect();
+
+		//Une connexion SQL doit être ouverte avant cette ligne...
+        $retour_total= $db->query('SELECT COUNT(*) AS total FROM chapters'); //Nous récupérons le contenu de la requête dans $retour_total
+        $donnees_total= $retour_total->fetch(); //On range retour sous la forme d'un tableau.
+        $total=$donnees_total['total']; //On récupère le total pour le placer dans la variable $total.
+        return $total;
+
+
+	}
+
+
+	 public function getChapters($premiereEntree, $messagesParPage)
 	{ 
 
 		$db = $this->dbConnect();
 
-		$req = $db->query('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM chapters ORDER BY creation_date');
-
+		$req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM chapters ORDER BY creation_date DESC LIMIT '.$premiereEntree.', '.$messagesParPage.'');
+		$req->execute(array($premiereEntree, $messagesParPage));
 		return $req;
 
 	}
