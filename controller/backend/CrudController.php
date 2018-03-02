@@ -60,6 +60,13 @@ class CrudController extends Crud
 
         $data = $test->delete($delpost);
 
+        $data2 = $test->deleteAllComments($delpost);
+
+        $data3 = $test->deleteApprovedComments($delpost);
+
+        header('Location: admin.php?action=admin&status=deleted');
+          exit;
+
     }
 
     public function selectChapter($id)
@@ -77,6 +84,34 @@ class CrudController extends Crud
         $test = new Crud();
 
         $data = $test->update($postTitle, $postCont, $id);
+    }
+
+    public function approveComment($id)
+    {
+
+      $test = new Crud();
+
+      $req = $test->getCommentId($id);
+
+      $data = $req->fetch();
+
+      $data2 = $test->approve($data['chapter_id'], $data['author'], $data['comment'], $data['comment_date']);
+
+      $test->deleteComment($id);
+      header('Location: admin.php?action=comments&status=approved');
+          exit;
+    }
+
+    public function deleteComment($id)
+    {
+
+      $test = new Crud();
+
+      $test->deleteComment($id);
+
+       header('Location: admin.php?action=comments&status=deleted');
+          exit;
+
     }
 
 

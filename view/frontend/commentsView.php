@@ -40,8 +40,30 @@
       </div>
     </article>
     <hr>
-    <?php
 
+    <p>commentaire approuvé</p>
+<?php
+if ($approved->rowCount() == 0) {
+  echo "there are no approved comments at the moment";
+}
+else{ 
+while ($data = $approved->fetch())
+{
+?>
+<p><strong><?= htmlspecialchars($data['author']); ?></strong> le <?= $data['comment_date_fr']; ?></p>
+<p><?=htmlspecialchars($data['comment']); ?></p>
+<?php
+} 
+
+}
+?>
+
+<p>commentaire en attente de moderation</p>   
+    <?php
+if ($comments->rowCount() == 0) {
+  echo "there are no comments waiting for moderation at the moment";
+}
+else{ 
 while ($comment = $comments->fetch())
 {
 ?>
@@ -51,7 +73,9 @@ while ($comment = $comments->fetch())
     <button name="report">Downvote</button>
 </form>
 <?php
-} 
+}
+ 
+}
 ?>
 
 <form action="index.php?action=addComment&amp;id=<?= $chapter['id'] ?>" method="post">

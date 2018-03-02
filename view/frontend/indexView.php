@@ -23,6 +23,11 @@
         <div class="col-lg-8 col-md-10 mx-auto">
 
 <?php
+if ($req->rowCount() == 0) {?>
+<p style="text-align: center;">there are no post at the moment</p>
+<?php
+}
+else{ 
 while ($data = $req->fetch())
 {
 ?>
@@ -55,6 +60,8 @@ for($i=1; $i<=$nombreDePages; $i++) //On fait notre boucle
      }
 }
 echo '</p>';
+
+}
 
 ?>       
 

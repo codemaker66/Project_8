@@ -30,6 +30,12 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
+          <?php 
+  //show message from add / edit page
+  if(isset($_GET['status'])){ 
+    echo '<h3>Comment '.$_GET['status'].'.</h3>'; 
+  } 
+  ?>
      
      <table class="table table-bordered">
   <thead>
@@ -39,6 +45,7 @@
       <th scope="col">comment</th>
       <th scope="col">creation_date</th>
       <th scope="col">report_number</th>
+      <th scope="col">approve</th>
       <th scope="col">delete</th>
     </tr>
   </thead>
@@ -53,7 +60,8 @@ while ($data = $result->fetch())
       <td><?= $data['comment']; ?></td>
       <td><?= $data['comment_date_fr']; ?></td>
       <td><?= $data['report_nb']; ?></td>
-      <td>edit</td>
+      <td><a href="admin.php?action=approve&amp;id=<?= $data['id'];?>">Approve</a></td>
+      <td><a href="admin.php?action=deleteC&amp;id=<?= $data['id'];?>">delete</a></td>
     </tr>
       <?php
 } 

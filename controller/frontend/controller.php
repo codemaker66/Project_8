@@ -52,6 +52,7 @@ class Controller extends Model {
         $model = new Model();
         $req = $model->getChapter($_GET['id']);
         $comments = $model->getComments($_GET['id']);
+        $approved = $model->getApprovedComments($_GET['id']);
 
         if ($req->rowCount() != 0)
           {

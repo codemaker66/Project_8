@@ -123,6 +123,18 @@ switch ($_GET['action']) {
           require('view/frontend/error.php');
         }
       break;
+      case 'approve':
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
+          $controller = new CrudController();
+          $controller->approveComment($_GET['id']);
+        }
+        break;
+        case 'deleteC':
+          if (isset($_GET['id']) && $_GET['id'] > 0) {
+          $controller = new CrudController();
+          $controller->deleteComment($_GET['id']);
+        }
+          break;
 
   default:
          require('view/frontend/error.php');

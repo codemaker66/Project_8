@@ -9,7 +9,7 @@ class Crud extends Manager
 
 		$db = $this->dbConnect();
 
-		$allComments = $db->query('SELECT chapter_id, author, report_nb, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments ORDER BY report_nb DESC LIMIT '.$premiereEntree.', '.$messagesParPage.'');
+		$allComments = $db->query('SELECT id, chapter_id, author, report_nb, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments ORDER BY report_nb DESC LIMIT '.$premiereEntree.', '.$messagesParPage.'');
 		$allComments->execute(array($premiereEntree, $messagesParPage));
 		return $allComments;
 
@@ -86,16 +86,66 @@ class Crud extends Manager
 
 	public function delete($delpost)
 	{ 
-			$db = $this->dbConnect();
+		  $db = $this->dbConnect();
 
-	      $stmt = $db->prepare('DELETE chapters , comments  FROM chapters  INNER JOIN comments  
-					WHERE chapters.id = comments.chapter_id and chapters.id = :postID');
+	      $stmt = $db->prepare('DELETE FROM chapters where id = :postID');
 	      
           $stmt->execute(array(':postID' => $delpost));
 
-          header('Location: admin.php?action=admin&status=deleted');
-          exit;
+          
 
     }
+
+    public function deleteAllComments($delpost)
+    {
+    	  $db = $this->dbConnect();
+
+	      $stmt = $db->prepare('DELETE FROM comments where chapter_id = :postID');
+	      
+          $stmt->execute(array(':postID' => $delpost));
+
+    }
+
+    public function deleteApprovedComments($delpost)
+    {
+    	  $db = $this->dbConnect();
+
+	      $stmt = $db->prepare('DELETE FROM approved where chapter_id = :postID');
+	      
+          $stmt->execute(array(':postID' => $delpost));
+
+    }
+
+    public function getCommentId($id)
+    {
+
+    	$db = $this->dbConnect();
+
+		$comment = $db->prepare('SELECT chapter_id, author, comment, comment_date FROM comments WHERE id = ?');
+		$comment->execute(array($id));
+		return $comment;
+
+    }
+
+    public function approve($chapter_id, $author, $comment, $comment_date)
+	{
+		$db = $this->dbConnect();
+
+		$stmt = $db->prepare('INSERT INTO approved (chapter_id, author, comment, comment_date) VALUES (?, ?, ?, ?)') ;
+        $stmt->execute(array($chapter_id, $author, $comment, $comment_date));
+
+        
+	}
+
+
+	public function deleteComment($id)
+	{
+		$db = $this->dbConnect();
+
+	      $stmt = $db->prepare('DELETE FROM comments WHERE id = :postID');
+	      
+          $stmt->execute(array(':postID' => $id));
+
+	}
 
 }

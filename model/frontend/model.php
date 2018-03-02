@@ -59,6 +59,20 @@ class Model extends Manager {
 
 	}
 
+	public function getApprovedComments($chapterId)
+	{
+
+		$db = $this->dbConnect();
+
+		$comments = $db->prepare('SELECT id, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM approved WHERE chapter_id = ? ORDER BY comment_date');
+		$comments->execute(array($chapterId));
+
+		return $comments;
+
+
+
+	}
+
 
 	public function postComment($chapterId, $author, $comment)
 	{
