@@ -48,7 +48,7 @@ while ($data = $req->fetch())
 {
 ?>
           <div class="post-preview">
-            <a href="post.php?id=<?= $data['id']; ?>">
+            <a href="index.php?action=articleWcomments&amp;id=<?= $data['id']; ?>">
               <h2 class="post-title">
                 <?= htmlspecialchars($data['title']); ?>
               </h2>
