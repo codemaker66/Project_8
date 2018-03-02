@@ -4,22 +4,25 @@ require('model/model.php');
 
 function listChapters()
 {
-    $req = getChapters();
+    $model = new Model();
+    $req = $model->getChapters();
 
     require('view/indexView.php');
 }
 
 function listPosts()
 {
-    $chapter = getChapter($_GET['id']);
-    $comments = getComments($_GET['id']);
+    $model = new Model();
+    $chapter = $model->getChapter($_GET['id']);
+    $comments = $model->getComments($_GET['id']);
 
     require('view/commentsView.php');
 }
 
 function addComment($chapterId, $author, $comment)
 {
-    $affectedLines = postComment($chapterId, $author, $comment);
+    $model = new Model();
+    $affectedLines = $model->postComment($chapterId, $author, $comment);
 
     if ($affectedLines === false) {
         die('Impossible d\'ajouter le commentaire !');
