@@ -1,6 +1,6 @@
 <?php
 
-require_once("model/frontend/model.php");
+require_once(__DIR__ . "/../../model/frontend/model.php");
 
 
 class Controller extends Model {

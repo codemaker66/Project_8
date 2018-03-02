@@ -1,5 +1,5 @@
 <?php
-require_once('controller/frontend/controller.php');
+require_once(__DIR__ . "/controller/frontend/controller.php");
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'listChapters') {
@@ -29,7 +29,6 @@ if (isset($_GET['action'])) {
             echo 'Erreur : aucun identifiant de billet envoyé';
         }
     }   
-
 
 
 

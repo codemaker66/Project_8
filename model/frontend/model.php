@@ -1,6 +1,6 @@
 <?php
 
-require_once("model/dbManager.php");
+require_once(__DIR__ . "/../dbManager.php");
 
 class Model extends Manager {
 
