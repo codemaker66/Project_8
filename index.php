@@ -26,6 +26,13 @@ if (isset($_GET['action'])) {
             echo 'Erreur : aucun identifiant de billet envoyé';
         }
     }
+    elseif ($_GET['action'] == 'report') {
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
+            $controller = new Controller();
+            $controller->report($_GET['id'], $_GET['chapter_id']);
+
+        }
+    }
     else{
 
         require('view/frontend/error.php');

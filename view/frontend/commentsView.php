@@ -47,6 +47,9 @@ while ($comment = $comments->fetch())
 ?>
 <p><strong><?= htmlspecialchars($comment['author']); ?></strong> le <?= $comment['comment_date_fr']; ?></p>
 <p><?=htmlspecialchars($comment['comment']); ?></p>
+<form action="index.php?action=report&amp;id=<?= $comment['id'] ?>&amp;chapter_id=<?= $chapter['id'] ?>" method="post">
+    <button name="report">Downvote</button>
+</form>
 <?php
 } 
 ?>

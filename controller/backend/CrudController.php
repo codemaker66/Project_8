@@ -60,8 +60,6 @@ class CrudController extends Crud
 
         $data = $test->delete($delpost);
 
-
-
     }
 
     public function selectChapter($id)

@@ -78,5 +78,31 @@ class Controller extends Model {
             header('Location: index.php?action=listPosts&id=' . $chapterId);
         }
     }
+
+    public function report($id, $chapterId)
+    {
+        $model = new Model();
+
+        $test = $model->testComments($id);
+
+
+
+        if ($test['report_nb']  > 4) {
+          $model = new Model();
+          $test2 = $model->deleteComment($test['id']);
+          header('Location: index.php?action=listPosts&id=' . $chapterId);
+        }
+
+        else
+        {
+           $model = new Model();
+           $test3 = $model->addReport($test['id']);
+           header('Location: index.php?action=listPosts&id=' . $chapterId);
+        }
+
+
+
+
+    }
     
 }

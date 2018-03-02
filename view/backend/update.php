@@ -31,7 +31,7 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
      
-    <h2>Add Post</h2>
+    <h2>Update post</h2>
 
   <?php if(isset($error)){
     foreach($error as $error){

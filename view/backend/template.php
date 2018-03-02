@@ -39,9 +39,6 @@
               <a class="nav-link" href="admin.php?action=add">create</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">save</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="admin.php?action=comments">comments</a>
             </li>
             <li class="nav-item">

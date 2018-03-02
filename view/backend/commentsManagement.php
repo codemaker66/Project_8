@@ -34,11 +34,11 @@
      <table class="table table-bordered">
   <thead>
     <tr>
-      <th scope="col">id</th>
+      <th scope="col">chapter_id</th>
       <th scope="col">author</th>
       <th scope="col">comment</th>
       <th scope="col">creation_date</th>
-      <th scope="col">edit</th>
+      <th scope="col">report_number</th>
       <th scope="col">delete</th>
     </tr>
   </thead>
@@ -48,11 +48,11 @@ while ($data = $result->fetch())
 {
 ?>
 <tr>
-      <th scope="row"><?= $data['id']; ?></th>
+      <th scope="row"><?= $data['chapter_id']; ?></th>
       <td><?= $data['author']; ?></td>
       <td><?= $data['comment']; ?></td>
       <td><?= $data['comment_date_fr']; ?></td>
-      <td>edit</td>
+      <td><?= $data['report_nb']; ?></td>
       <td>edit</td>
     </tr>
       <?php

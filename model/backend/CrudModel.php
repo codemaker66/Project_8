@@ -9,7 +9,7 @@ class Crud extends Manager
 
 		$db = $this->dbConnect();
 
-		$allComments = $db->query('SELECT id, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments ORDER BY comment_date DESC LIMIT '.$premiereEntree.', '.$messagesParPage.'');
+		$allComments = $db->query('SELECT chapter_id, author, report_nb, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments ORDER BY report_nb DESC LIMIT '.$premiereEntree.', '.$messagesParPage.'');
 		$allComments->execute(array($premiereEntree, $messagesParPage));
 		return $allComments;
 
@@ -88,7 +88,9 @@ class Crud extends Manager
 	{ 
 			$db = $this->dbConnect();
 
-	      $stmt = $db->prepare('DELETE FROM chapters WHERE id = :postID');
+	      $stmt = $db->prepare('DELETE chapters , comments  FROM chapters  INNER JOIN comments  
+					WHERE chapters.id = comments.chapter_id and chapters.id = :postID');
+	      
           $stmt->execute(array(':postID' => $delpost));
 
           header('Location: admin.php?action=admin&status=deleted');
