@@ -2,7 +2,7 @@
 
 class Manager {
 	
-	public function dbConnect()
+	protected function dbConnect()
 	{
 
 		try

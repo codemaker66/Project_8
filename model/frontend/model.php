@@ -32,6 +32,18 @@ class Model extends Manager {
 	}
 
 
+	public function getAllComments()
+	{
+
+		$db = $this->dbConnect();
+
+		$allComments = $db->query('SELECT id, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments ORDER BY comment_date');
+		
+		return $allComments;
+
+	}
+
+
 	 public function getComments($chapterId)
 	{
 

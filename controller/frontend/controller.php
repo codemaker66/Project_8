@@ -18,7 +18,7 @@ class Controller extends Model {
         $model = new Model();
         $chapter = $model->getChapter($_GET['id']);
         $comments = $model->getComments($_GET['id']);
-
+        
         require('view/frontend/commentsView.php');
     }
 

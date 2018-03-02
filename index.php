@@ -2,11 +2,8 @@
 require_once(__DIR__ . "/controller/frontend/controller.php");
 
 if (isset($_GET['action'])) {
-    if ($_GET['action'] == 'listChapters') {
-        $controller = new Controller();
-        $controller->listChapters();
-    }
-    elseif ($_GET['action'] == 'listPosts') {
+    
+    if ($_GET['action'] == 'listPosts') {
         if (isset($_GET['id']) && $_GET['id'] > 0) {
             $controller = new Controller();
             $controller->listPosts();
@@ -28,12 +25,18 @@ if (isset($_GET['action'])) {
         else {
             echo 'Erreur : aucun identifiant de billet envoyé';
         }
+    }
+    else{
+
+        echo "erreur 404";
     }   
 
 
 
 }
+
 else {
+    
     $controller = new Controller();
     $controller->listChapters();
 }

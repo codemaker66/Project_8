@@ -1,28 +1,58 @@
 <?php
 session_start();
-require_once("model/backend/model.php");
-$login = new USER();
+require_once(__DIR__ . "/../../model/backend/model.php");
+require_once(__DIR__ . "/../../model/frontend/model.php");
 
-if($login->is_loggedin()!="")
+class Controller extends USER
 {
-	$login->redirect('view/backend/admin.php');
-}
-
-if(isset($_POST['btn-login']))
-{
-	$uname = $_POST['txt_uname_email'];
-	$umail = $_POST['txt_uname_email'];
-	$upass = $_POST['txt_password'];
-		
-	if($login->doLogin($uname,$umail,$upass))
+	public function checkLogin()
 	{
-		$login->redirect('view/backend/admin.php');
+		$login = new USER();
+
+		if($login->is_loggedin()!="")
+		{
+			$model = new Model();
+            $req = $model->getChapters();
+            $model = new Model();
+            $comments = $model->getAllComments();
+			require('view/backend/view.php');
+		}
+
+		elseif(!$login->is_loggedin())
+		{
+			// session no set redirects to login page
+			require('view/backend/login.php');
+		}
+
 	}
-	else
-	{
-		$error = "Wrong Details !";
-	}	
-}
 
+	public function sendLogin($uname,$umail,$upass)
+	{
+		$login = new USER();
+
+		if($login->doLogin($uname,$umail,$upass))
+		{
+			$model = new Model();
+            $req = $model->getChapters();
+            $model = new Model();
+            $comments = $model->getAllComments();
+			require('view/backend/view.php');
+		}
+		else
+		{
+			$error = "Wrong Details !";
+			require('view/backend/login.php');
+		}	
+
+	}
+
+	public function logOut()
+	{
+			$login = new USER();
+			$login->doLogout();
+			$login->redirect('index.php');
+	}
+
+}
 
 ?>
