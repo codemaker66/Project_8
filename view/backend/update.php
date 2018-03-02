@@ -41,11 +41,14 @@
 
   <form action='' method='post'>
 
+    <input type='hidden' name='id' value='<?php echo $data['id'];?>'>
+
     <p><label>Title</label><br />
-    <input type='text' name='postTitle' value='<?php if(isset($error)){ echo $_POST['postTitle'];}?>'></p>
+    <?php echo '<input type="text" name="title" value="'.$data['title'].'">';?></p>
+
 
     <p><label>Content</label><br />
-    <textarea name='postCont' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['postCont'];}?></textarea></p>
+    <textarea name='content' cols='60' rows='10'><?php echo $data['content'];?></textarea></p>
 
     <p><input type='submit' name='submit' value='Submit'></p>
 

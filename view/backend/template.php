@@ -25,7 +25,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="index.php">Le blog de Jean Forteroche</a>
+        <a class="navbar-brand" target="_blank" href="index.php">Le blog de Jean Forteroche</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>
@@ -33,10 +33,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" target="_black" href="index.php">Home</a>
+              <a class="nav-link" target="_black" href="admin.php?action=admin">Administration</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">create</a>
+              <a class="nav-link" href="admin.php?action=add">create</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">save</a>
@@ -72,6 +72,27 @@
 
     <!-- Custom scripts for this template -->
     <script src="public/js/clean-blog.min.js"></script>
+    <script language="JavaScript" type="text/javascript">
+  function delpost(id, title)
+  {
+    if (confirm("Are you sure you want to delete the article that have the id  '" + id + "'"))
+    {
+      window.location.href = 'admin.php?delpost=' + id;
+    }
+  }
+  </script>
+    <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+  <script>
+          tinymce.init({
+              selector: "textarea",
+              plugins: [
+                  "advlist autolink lists link image charmap print preview anchor",
+                  "searchreplace visualblocks code fullscreen",
+                  "insertdatetime media table contextmenu paste"
+              ],
+              toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+          });
+  </script>
 
 
   </body>
