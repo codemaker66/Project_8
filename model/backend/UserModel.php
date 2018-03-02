@@ -1,7 +1,8 @@
 <?php
-
+//call the dbManager.php file
 require_once(__DIR__ . "/../dbManager.php");
 
+//create a child class "USER" from the class "Manager"
 class USER extends Manager
 {	
 
@@ -9,10 +10,10 @@ class USER extends Manager
 	
 	public function __construct()
 	{
-		
+		//call the dbConnect methode from the class "Manager" and assign the value returned to the property of this class
 		$this->_db = $this->dbConnect();
     }
-    
+    //test if the user and it's pass exists then test the password typed if none of that find the user we show an error
 	public function doLogin($uname,$umail,$upass)
 	{
 		try
@@ -38,7 +39,7 @@ class USER extends Manager
 			echo $e->getMessage();
 		}
 	}
-	
+	//test if a session exists
 	public function is_loggedin()
 	{
 		if(isset($_SESSION['user_session']))
@@ -46,12 +47,12 @@ class USER extends Manager
 			return true;
 		}
 	}
-	
+	//redirect the user by the url passed to the methode
 	public function redirect($url)
 	{
 		header("Location: $url");
 	}
-	
+	//do a session destroy and logout the user
 	public function doLogout()
 	{
 		session_destroy();
@@ -61,6 +62,3 @@ class USER extends Manager
 
 	
 }
-
-
-?>

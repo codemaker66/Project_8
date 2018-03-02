@@ -33,16 +33,16 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="admin.php?action=admin">Administration</a>
+              <a class="nav-link" href="admin.php?action=admin">Articles</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="admin.php?action=add">create</a>
+              <a class="nav-link" href="admin.php?action=add">Créer</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="admin.php?action=comments">comments</a>
+              <a class="nav-link" href="admin.php?action=comments">Commentaires</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="admin.php?action=logout">logout</a>
+              <a class="nav-link" href="admin.php?action=logout">Se déconnecter</a>
             </li>
           </ul>
         </div>
@@ -56,8 +56,7 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-              <h1>Clean Blog</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+              
             </div>
           </div>
         </div>
@@ -71,8 +70,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <p class="copyright text-muted">Copyright &copy; Your Website 2018</p>
-            
+            <p class="copyright text-muted">Copyright &copy; Jean Forteroche 2018</p>
           </div>
         </div>
       </div>
@@ -84,20 +82,10 @@
 
     <!-- Custom scripts for this template -->
     <script src="public/js/clean-blog.min.js"></script>
-    <!--mon script personnele-->
+
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <!--my personal script-->
     <script src="public/js/customScript.js"></script>
-    <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
-  <script>
-          tinymce.init({
-              selector: "textarea",
-              plugins: [
-                  "advlist autolink lists link image charmap print preview anchor",
-                  "searchreplace visualblocks code fullscreen",
-                  "insertdatetime media table contextmenu paste"
-              ],
-              toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-          });
-  </script>
 
 
   </body>

@@ -1,70 +1,63 @@
 <?php
 
-
+//create a child class "Crud" from the class "Manager"
 class Crud extends Manager
 {
 	private $_db;
 	
 	public function __construct()
 	{
-		
+		//call the dbConnect methode from the class "Manager" and assign the value returned to the property of this class
 		$this->_db = $this->dbConnect();
     }
-	
-	public function readComments($firstEntry, $chaptersPerPage)
+	//get all comments from the table comments and limit the result by 5
+	public function readComments($firstEntry, $commentsPerPage)
 	{
 
-		$allComments = $this->_db->query('SELECT id, chapter_id, author, report_nb, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments ORDER BY report_nb DESC LIMIT '.$firstEntry.', '.$chaptersPerPage.'');
-		$allComments->execute(array($firstEntry, $chaptersPerPage));
+		$allComments = $this->_db->query('SELECT id, chapter_id, author, report_nb, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments ORDER BY report_nb DESC LIMIT '.$firstEntry.', '.$commentsPerPage.'');
+		$allComments->execute(array($firstEntry, $commentsPerPage));
 		return $allComments;
 
 	}
-
+	//get all articles from the table chapters and limit the result by 5
 	public function readChapters($firstEntry, $chaptersPerPage)
 	{
 
-		$allChapters = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr, DATE_FORMAT(edit_date, \'%d/%m/%Y à %Hh%imin%ss\') AS edit_date_fr FROM chapters ORDER BY creation_date_fr LIMIT '.$firstEntry.', '.$chaptersPerPage.'');
+		$allChapters = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr, DATE_FORMAT(edit_date, \'%d/%m/%Y à %Hh%imin%ss\') AS edit_date_fr FROM chapters ORDER BY creation_date_fr DESC LIMIT '.$firstEntry.', '.$chaptersPerPage.'');
 		$allChapters->execute(array($firstEntry, $chaptersPerPage));
 		return $allChapters;
 
 	}
-
+	//get an article by it's id
 	public function readChapter($id)
 	{
-			$stmt = $this->_db->prepare('SELECT id, title, content FROM chapters WHERE id = :postID') ;
-			$stmt->execute(array(':postID' => $id));
-			return $stmt;
-			/*
-			$data = $stmt->fetch();
-			return $data;*/
 
+		$stmt = $this->_db->prepare('SELECT id, title, content FROM chapters WHERE id = :postID') ;
+		$stmt->execute(array(':postID' => $id));
+		return $stmt;
 
 	}
-
+	//get all the rows from the table chapters
 	public function getallchapters()
 	{
 
-		//Une connexion SQL doit être ouverte avant cette ligne...
-        $retour_total= $this->_db->query('SELECT COUNT(*) AS total FROM chapters'); //Nous récupérons le contenu de la requête dans $retour_total
-        $donnees_total= $retour_total->fetch(); //On range retour sous la forme d'un tableau.
-        $total=$donnees_total['total']; //On récupère le total pour le placer dans la variable $total.
+        $total_return= $this->_db->query('SELECT COUNT(*) AS total FROM chapters');
+        $total_data= $total_return->fetch(PDO::FETCH_ASSOC);
+        $total=$total_data['total'];
         return $total;
 
-
 	}
-
+	//get all the rows from the table comments
 	public function getallcomments()
 	{
 
-		//Une connexion SQL doit être ouverte avant cette ligne...
-        $retour_total= $this->_db->query('SELECT COUNT(*) AS total FROM comments'); //Nous récupérons le contenu de la requête dans $retour_total
-        $donnees_total= $retour_total->fetch(); //On range retour sous la forme d'un tableau.
-        $total=$donnees_total['total']; //On récupère le total pour le placer dans la variable $total.
+        $total_return= $this->_db->query('SELECT COUNT(*) AS total FROM comments'); 
+        $total_data= $total_return->fetch(PDO::FETCH_ASSOC); 
+        $total=$total_data['total'];
         return $total;
 
-
 	}
-
+	//add the article created to the table chapters
 	public function create($postTitle, $postCont)
 	{
 
@@ -75,12 +68,13 @@ class Crud extends Manager
            ));
 
         //redirect to index page
-        header('Location: admin.php?action=admin&status=created');
-        exit;
+        header('Location: admin.php?action=admin&status=créé');
+        exit();
 	}
-
+	//add the new updated article to the database
 	public function update($postTitle, $postCont, $id)
 	{
+
 		$stmt = $this->_db->prepare('UPDATE chapters SET title = :postTitle, content = :postCont, edit_date = NOW() WHERE id = :postID') ;
 				$stmt->execute(array(
 					':postTitle' => $postTitle,
@@ -88,39 +82,35 @@ class Crud extends Manager
 					':postID' => $id
 				));
 
-				//redirect to index page
-				header('Location: admin.php?action=admin&status=updated');
-				exit;
-
-
+		//redirect to index page
+		header('Location: admin.php?action=admin&status=mis à jour');
+		exit();
 	}
-
+	//delete an article from the table chapters
 	public function delete($delpost)
 	{ 
 
-	      $stmt = $this->_db->prepare('DELETE FROM chapters where id = :postID');
-	      
-          $stmt->execute(array(':postID' => $delpost));
-    }
+		$stmt = $this->_db->prepare('DELETE FROM chapters where id = :postID');
+		$stmt->execute(array(':postID' => $delpost));
 
+    }
+    //delete all the comments that have the same id as the article id from the table comments
     public function deleteAllComments($delpost)
     {
 
-	      $stmt = $this->_db->prepare('DELETE FROM comments where chapter_id = :postID');
-	      
-          $stmt->execute(array(':postID' => $delpost));
+	    $stmt = $this->_db->prepare('DELETE FROM comments where chapter_id = :postID');
+        $stmt->execute(array(':postID' => $delpost));
 
     }
-
+    //delete all the approved comments that have the same id as the article id from the table approved
     public function deleteApprovedComments($delpost)
     {
 
-	      $stmt = $this->_db->prepare('DELETE FROM approved where chapter_id = :postID');
-	      
-          $stmt->execute(array(':postID' => $delpost));
+	    $stmt = $this->_db->prepare('DELETE FROM approved where chapter_id = :postID');
+        $stmt->execute(array(':postID' => $delpost));
 
     }
-
+    //get a comment by it's id from the table comments
     public function getCommentId($id)
     {
 
@@ -129,23 +119,21 @@ class Crud extends Manager
 		return $comment;
 
     }
-
+    //add a comments and all it's info to the table approved
     public function approve($chapter_id, $author, $comment, $comment_date)
 	{
 
 		$stmt = $this->_db->prepare('INSERT INTO approved (chapter_id, author, comment, comment_date) VALUES (?, ?, ?, ?)') ;
         $stmt->execute(array($chapter_id, $author, $comment, $comment_date));
-
-        
+ 
 	}
 
-
+	//delete a comment by it's id from the table comments
 	public function deleteComment($id)
 	{
 
-	      $stmt = $this->_db->prepare('DELETE FROM comments WHERE id = :postID');
-	      
-          $stmt->execute(array(':postID' => $id));
+	    $stmt = $this->_db->prepare('DELETE FROM comments WHERE id = :postID');
+        $stmt->execute(array(':postID' => $id));
 
 	}
 

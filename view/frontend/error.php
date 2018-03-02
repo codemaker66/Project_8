@@ -1,4 +1,4 @@
-<?php $title = 'Erreur 404'; ?>
+<?php $title = 'Erreur'; ?>
 
 <?php ob_start(); ?>
 
@@ -9,8 +9,8 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-              <h1>Clean Blog</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+              <h1>Oops..!!</h1>
+              <span class="subheading">Erreur 404</span>
             </div>
           </div>
         </div>
@@ -21,18 +21,10 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-
-        <h1>Erreur 404</h1>
-
-        <p class="alert alert-danger">une erreur est survenue..si cela persiste veuillez contacter l'administrateur du site en lui expliquant ce que vous avez fait pour avoire ce resultat</p>
-
-
-     
-
-</div>
+        <p class="alert alert-danger">Une erreur est survenue..si cela persiste veuillez contacter l'administrateur du site pour lui expliqer ce que vous avez fait pour avoir ce resultat</p>
+        </div>
       </div>
     </div>
-
     <hr>
 
 <?php $content = ob_get_clean(); ?>

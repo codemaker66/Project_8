@@ -1,7 +1,8 @@
 <?php
 
+//create a class named "Manager"
 class Manager {
-	
+	//connect to the database and return the results
 	protected function dbConnect()
 	{
 

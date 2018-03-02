@@ -1,12 +1,15 @@
-<?php $title = 'AdminPanel';
+<?php $title = 'Mettre à jour un article';
 
-  require_once(__DIR__ ."/../../model/backend/UserModel.php");
-  $session = new USER();
-  if(!$session->is_loggedin())
-  {
-    // session no set redirects to login page
-    $session->redirect('index.php');
-  }
+//call the backend model file: UserModel.php and create an object from the class USER
+require_once(__DIR__ ."/../../model/backend/UserModel.php");
+
+$session = new USER();
+
+if(!$session->is_loggedin())
+{
+  //if session is not set then we redirects to the index page
+  $session->redirect('index.php');
+}
 ?>
 
 <?php ob_start(); ?>
@@ -18,38 +21,37 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
      
-    <h2>Update post</h2>
+          <h2>Mettre à jour l'article</h2>
 
-  <?php if(isset($error)){
-    foreach($error as $error){
-      echo '<p class="alert alert-danger">'.$error.' !!</p>';
-    }
-  } ?>
+            <?php
+            //show an error if it exists in the array $error
+             if(isset($error)){
+              foreach($error as $error){
+                echo '<p class="alert alert-danger">'.$error.' !!</p>';
+              }
+            } ?>
 
-  <form action='' method='post'>
+          <form method='post'>
 
-    <input type='hidden' name='id' value='<?php echo $data['id'];?>'>
-    <div class="form-group">
-    <label>Title</label>
-    <?php echo '<input type="text" class="form-control" name="title" value="'.$data['title'].'">';?>
-    </div>
+            <input type='hidden' name='id' value='<?php echo $data['id'];?>'>
+            <div class="form-group">
+            <label>Titre</label>
+            <?= '<input type="text" class="form-control" name="title" value="'.$data['title'].'">';?>
+            </div>
 
-    <div class="form-group">
-    <label>Content</label>
-    <textarea name='content' cols='60' rows='10'><?php echo $data['content'];?></textarea>
-    </div>
-    <div class="form-group">
-    <input class="btn btn-success" type='submit' name='submit' value='Submit'>
-  </div>
-  </form>
-
-
-
-       
+            <div class="form-group">
+            <label>contenu</label>
+            <textarea name='content' cols='60' rows='10'><?php echo $data['content'];?></textarea>
+            </div>
+            <div class="form-group">
+            <input class="btn btn-success" type='submit' name='submit' value='Mettre à jour'>
+          </div>
+          </form>
+ 
         </div>
       </div>
     </div>
-    <hr>
+<hr>
 
 <?php $content = ob_get_clean(); ?>
 
