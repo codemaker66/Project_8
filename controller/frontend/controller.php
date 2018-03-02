@@ -21,9 +21,14 @@ class Controller extends Model {
         {
              $pageActuelle=intval($_GET['page']);
          
-             if($pageActuelle>$nombreDePages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
+             if($pageActuelle == 0) 
              {
-                  $pageActuelle=$nombreDePages;
+                  
+                  header("Location: error.php");
+                  exit();
+             }
+             elseif ($pageActuelle>$nombreDePages) { // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
+               $pageActuelle=$nombreDePages;
              }
         }
         else // Sinon
@@ -45,10 +50,20 @@ class Controller extends Model {
     public function listPosts()
     {
         $model = new Model();
-        $chapter = $model->getChapter($_GET['id']);
+        $req = $model->getChapter($_GET['id']);
         $comments = $model->getComments($_GET['id']);
-        
-        require('view/frontend/commentsView.php');
+
+        if ($req->rowCount() != 0)
+          {
+            $chapter = $req->fetch();
+             require('view/frontend/commentsView.php');
+          }
+
+          else
+          {
+            require('view/frontend/error.php');
+          }
+
     }
 
     public function addComment($chapterId, $author, $comment)

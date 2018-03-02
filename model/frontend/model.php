@@ -38,10 +38,8 @@ class Model extends Manager {
 
 		$req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM chapters WHERE id = ?');
 		$req->execute(array($chapterId));
-		$chapter = $req->fetch();
 
-		return $chapter;
-
+		return $req;
 
 	}
 

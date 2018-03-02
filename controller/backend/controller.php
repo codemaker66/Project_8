@@ -24,8 +24,15 @@ class Controller extends USER
         if(isset($_GET['page'])) // Si la variable $_GET['page'] existe...
         {
              $pageActuelle=intval($_GET['page']);
+
+             if($pageActuelle == 0) 
+             {
+                  
+                  header("Location: error.php");
+                  exit();
+             }
          
-             if($pageActuelle>$nombreDePages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
+             elseif($pageActuelle>$nombreDePages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
              {
                   $pageActuelle=$nombreDePages;
              }
