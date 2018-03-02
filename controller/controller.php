@@ -16,3 +16,15 @@ function listPosts()
 
     require('view/commentsView.php');
 }
+
+function addComment($chapterId, $author, $comment)
+{
+    $affectedLines = postComment($chapterId, $author, $comment);
+
+    if ($affectedLines === false) {
+        die('Impossible d\'ajouter le commentaire !');
+    }
+    else {
+        header('Location: index.php?action=listPosts&id=' . $chapterId);
+    }
+}

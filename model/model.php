@@ -58,4 +58,15 @@ function getComments($chapterId)
 
 }
 
+
+function postComment($chapterId, $author, $comment)
+{
+    $db = dbConnect();
+    $comments = $db->prepare('INSERT INTO comments(chapter_id, author, comment, comment_date) VALUES(?, ?, ?, NOW())');
+    $affectedLines = $comments->execute(array($chapterId, $author, $comment));
+
+    return $affectedLines;
+}
+
+
 ?>
