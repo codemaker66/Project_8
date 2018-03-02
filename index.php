@@ -1,5 +1,5 @@
 <?php
-require_once('controller/controller.php');
+require_once('controller/frontend/controller.php');
 
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'listChapters') {

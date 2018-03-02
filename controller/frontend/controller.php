@@ -1,6 +1,6 @@
 <?php
 
-require_once("model/model.php");
+require_once("model/frontend/model.php");
 
 
 class Controller extends Model {
@@ -10,7 +10,7 @@ class Controller extends Model {
         $model = new Model();
         $req = $model->getChapters();
 
-        require('view/indexView.php');
+        require('view/frontend/indexView.php');
     }
 
     public function listPosts()
@@ -19,7 +19,7 @@ class Controller extends Model {
         $chapter = $model->getChapter($_GET['id']);
         $comments = $model->getComments($_GET['id']);
 
-        require('view/commentsView.php');
+        require('view/frontend/commentsView.php');
     }
 
     public function addComment($chapterId, $author, $comment)
