@@ -1,50 +1,64 @@
 <?php
-require_once(__DIR__ . "/controller/frontend/controller.php");
+require(__DIR__ . "/controller/frontend/controller.php");
+
+$controller = new Controller();
 
 if (isset($_GET['action'])) {
     
-    if ($_GET['action'] == 'listPosts') {
-        if (isset($_GET['id']) && $_GET['id'] > 0) {
-            $controller = new Controller();
-            $controller->listPosts();
-        }
-        else {
-            echo 'Erreur : aucun identifiant de billet envoyé';
-        }
-    }
-    elseif ($_GET['action'] == 'addComment') {
-        if (isset($_GET['id']) && $_GET['id'] > 0) {
-            if (!empty($_POST['author']) && !empty($_POST['comment'])) {
-                $controller = new Controller();
-                $controller->addComment($_GET['id'], $_POST['author'], $_POST['comment']);
+    switch ($_GET['action']) {
+        
+        case 'listPosts':
+            
+            if (isset($_GET['id']) && $_GET['id'] > 0) {
+                
+                $controller->listPosts();
             }
             else {
-                echo 'Erreur : tous les champs ne sont pas remplis !';
+                require('view/frontend/error.php');
             }
-        }
-        else {
-            echo 'Erreur : aucun identifiant de billet envoyé';
-        }
+            
+            break;
+
+        case 'addComment':
+            
+            if (isset($_GET['id']) && $_GET['id'] > 0) {
+                
+                if (!empty($_POST['author']) && !empty($_POST['comment'])) {
+                
+                    $controller->addComment($_GET['id'], $_POST['author'], $_POST['comment']);
+                }
+                else {
+                    require('view/frontend/error.php');
+                }
+            }
+            else {
+                require('view/frontend/error.php');
+            }
+
+            break;
+
+        case 'report':
+            
+            if (isset($_GET['id']) && $_GET['id'] > 0) {
+            
+                $controller->report($_GET['id'], $_GET['chapter_id']);
+            }
+
+            else{
+                    require('view/frontend/error.php');
+            }
+
+            break;
+
+        default:
+
+            require('view/frontend/error.php');
+            
+            break;
     }
-    elseif ($_GET['action'] == 'report') {
-        if (isset($_GET['id']) && $_GET['id'] > 0) {
-            $controller = new Controller();
-            $controller->report($_GET['id'], $_GET['chapter_id']);
-
-        }
-    }
-    else{
-
-        require('view/frontend/error.php');
-        
-    }   
-
-
 
 }
-
 else {
     
-    $controller = new Controller();
     $controller->listChapters();
 }

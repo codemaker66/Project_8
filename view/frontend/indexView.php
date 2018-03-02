@@ -1,4 +1,4 @@
-<?php $title = 'accueil'; ?>
+<?php $title = 'Accueil'; ?>
 
 <?php ob_start(); ?>
 
@@ -28,18 +28,27 @@ if ($req->rowCount() == 0) {?>
 <?php
 }
 else{ 
-while ($data = $req->fetch())
+while ($chapters = $req->fetch())
 {
 ?>
           <div class="post-preview">
-            <a href="index.php?action=listPosts&amp;id=<?= $data['id']; ?>">
+            <a href="index.php?action=listPosts&amp;id=<?= $chapters['id']; ?>">
               <h2 class="post-title">
-                <?= $data['title']; ?>
+                <?= $chapters['title']; ?>
               </h2>
+              <h3 class="post-subtitle">
+                Publié par Jean Forteroche le <?= $chapters['creation_date_fr']; ?>
+              </h3>
             </a>
-            <p class="post-meta">Posted by
-              <a href="#">Jean Forteroche</a>
-              le <?= $data['creation_date_fr']; ?></p>
+              <?php if ($chapters['edit_date_fr'] == NULL) {?>
+              <p class="post-meta">pas de mis a jour pour cette article</p>
+              <?php
+            }
+            else{?>
+              <p class="post-meta">Mis a jour le <?=$chapters['edit_date_fr']; ?></p>
+            <?php
+            }?>
+
           </div>
         
          <?php
@@ -47,10 +56,10 @@ while ($data = $req->fetch())
 $req->closeCursor();
 
 echo '<p align="center">Page : '; //Pour l'affichage, on centre la liste des pages
-for($i=1; $i<=$nombreDePages; $i++) //On fait notre boucle
+for($i=1; $i<=$numberOfPages; $i++) //On fait notre boucle
 {
      //On va faire notre condition
-     if($i==$pageActuelle) //Si il s'agit de la page actuelle...
+     if($i==$currentPage) //Si il s'agit de la page actuelle...
      {
          echo ' [ '.$i.' ] '; 
      }  

@@ -3,35 +3,49 @@
 
 class Crud extends Manager
 {
+	private $_db;
 	
-	public function readComments($premiereEntree, $messagesParPage)
+	public function __construct()
+	{
+		
+		$this->_db = $this->dbConnect();
+    }
+	
+	public function readComments($firstEntry, $chaptersPerPage)
 	{
 
-		$db = $this->dbConnect();
-
-		$allComments = $db->query('SELECT id, chapter_id, author, report_nb, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments ORDER BY report_nb DESC LIMIT '.$premiereEntree.', '.$messagesParPage.'');
-		$allComments->execute(array($premiereEntree, $messagesParPage));
+		$allComments = $this->_db->query('SELECT id, chapter_id, author, report_nb, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments ORDER BY report_nb DESC LIMIT '.$firstEntry.', '.$chaptersPerPage.'');
+		$allComments->execute(array($firstEntry, $chaptersPerPage));
 		return $allComments;
 
 	}
 
-	public function readChapters($id)
+	public function readChapters($firstEntry, $chaptersPerPage)
 	{
-		$db = $this->dbConnect();
-			$stmt = $db->prepare('SELECT id, title, content FROM chapters WHERE id = :postID') ;
+
+		$allChapters = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr, DATE_FORMAT(edit_date, \'%d/%m/%Y à %Hh%imin%ss\') AS edit_date_fr FROM chapters ORDER BY creation_date_fr LIMIT '.$firstEntry.', '.$chaptersPerPage.'');
+		$allChapters->execute(array($firstEntry, $chaptersPerPage));
+		return $allChapters;
+
+	}
+
+	public function readChapter($id)
+	{
+			$stmt = $this->_db->prepare('SELECT id, title, content FROM chapters WHERE id = :postID') ;
 			$stmt->execute(array(':postID' => $id));
+			return $stmt;
+			/*
 			$data = $stmt->fetch();
-			return $data;
+			return $data;*/
 
 
 	}
 
 	public function getallchapters()
 	{
-		$db = $this->dbConnect();
 
 		//Une connexion SQL doit être ouverte avant cette ligne...
-        $retour_total= $db->query('SELECT COUNT(*) AS total FROM chapters'); //Nous récupérons le contenu de la requête dans $retour_total
+        $retour_total= $this->_db->query('SELECT COUNT(*) AS total FROM chapters'); //Nous récupérons le contenu de la requête dans $retour_total
         $donnees_total= $retour_total->fetch(); //On range retour sous la forme d'un tableau.
         $total=$donnees_total['total']; //On récupère le total pour le placer dans la variable $total.
         return $total;
@@ -41,10 +55,9 @@ class Crud extends Manager
 
 	public function getallcomments()
 	{
-		$db = $this->dbConnect();
 
 		//Une connexion SQL doit être ouverte avant cette ligne...
-        $retour_total= $db->query('SELECT COUNT(*) AS total FROM comments'); //Nous récupérons le contenu de la requête dans $retour_total
+        $retour_total= $this->_db->query('SELECT COUNT(*) AS total FROM comments'); //Nous récupérons le contenu de la requête dans $retour_total
         $donnees_total= $retour_total->fetch(); //On range retour sous la forme d'un tableau.
         $total=$donnees_total['total']; //On récupère le total pour le placer dans la variable $total.
         return $total;
@@ -54,9 +67,8 @@ class Crud extends Manager
 
 	public function create($postTitle, $postCont)
 	{
-		$db = $this->dbConnect();
 
-		$stmt = $db->prepare('INSERT INTO chapters (title, content, creation_date) VALUES (:postTitle, :postCont, NOW())') ;
+		$stmt = $this->_db->prepare('INSERT INTO chapters (title, content, creation_date) VALUES (:postTitle, :postCont, NOW())') ;
         $stmt->execute(array(
           ':postTitle' => $postTitle,
           ':postCont' => $postCont
@@ -69,8 +81,7 @@ class Crud extends Manager
 
 	public function update($postTitle, $postCont, $id)
 	{
-		$db = $this->dbConnect();
-		$stmt = $db->prepare('UPDATE chapters SET title = :postTitle, content = :postCont, creation_date = NOW() WHERE id = :postID') ;
+		$stmt = $this->_db->prepare('UPDATE chapters SET title = :postTitle, content = :postCont, edit_date = NOW() WHERE id = :postID') ;
 				$stmt->execute(array(
 					':postTitle' => $postTitle,
 					':postCont' => $postCont,
@@ -86,21 +97,16 @@ class Crud extends Manager
 
 	public function delete($delpost)
 	{ 
-		  $db = $this->dbConnect();
 
-	      $stmt = $db->prepare('DELETE FROM chapters where id = :postID');
+	      $stmt = $this->_db->prepare('DELETE FROM chapters where id = :postID');
 	      
           $stmt->execute(array(':postID' => $delpost));
-
-          
-
     }
 
     public function deleteAllComments($delpost)
     {
-    	  $db = $this->dbConnect();
 
-	      $stmt = $db->prepare('DELETE FROM comments where chapter_id = :postID');
+	      $stmt = $this->_db->prepare('DELETE FROM comments where chapter_id = :postID');
 	      
           $stmt->execute(array(':postID' => $delpost));
 
@@ -108,9 +114,8 @@ class Crud extends Manager
 
     public function deleteApprovedComments($delpost)
     {
-    	  $db = $this->dbConnect();
 
-	      $stmt = $db->prepare('DELETE FROM approved where chapter_id = :postID');
+	      $stmt = $this->_db->prepare('DELETE FROM approved where chapter_id = :postID');
 	      
           $stmt->execute(array(':postID' => $delpost));
 
@@ -119,9 +124,7 @@ class Crud extends Manager
     public function getCommentId($id)
     {
 
-    	$db = $this->dbConnect();
-
-		$comment = $db->prepare('SELECT chapter_id, author, comment, comment_date FROM comments WHERE id = ?');
+		$comment = $this->_db->prepare('SELECT chapter_id, author, comment, comment_date FROM comments WHERE id = ?');
 		$comment->execute(array($id));
 		return $comment;
 
@@ -129,9 +132,8 @@ class Crud extends Manager
 
     public function approve($chapter_id, $author, $comment, $comment_date)
 	{
-		$db = $this->dbConnect();
 
-		$stmt = $db->prepare('INSERT INTO approved (chapter_id, author, comment, comment_date) VALUES (?, ?, ?, ?)') ;
+		$stmt = $this->_db->prepare('INSERT INTO approved (chapter_id, author, comment, comment_date) VALUES (?, ?, ?, ?)') ;
         $stmt->execute(array($chapter_id, $author, $comment, $comment_date));
 
         
@@ -140,9 +142,8 @@ class Crud extends Manager
 
 	public function deleteComment($id)
 	{
-		$db = $this->dbConnect();
 
-	      $stmt = $db->prepare('DELETE FROM comments WHERE id = :postID');
+	      $stmt = $this->_db->prepare('DELETE FROM comments WHERE id = :postID');
 	      
           $stmt->execute(array(':postID' => $id));
 

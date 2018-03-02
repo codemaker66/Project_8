@@ -1,9 +1,9 @@
-<?php $title = 'error'; ?>
+<?php $title = 'Erreur 404'; ?>
 
 <?php ob_start(); ?>
 
 <!-- Page Header -->
-    <header class="masthead" style="background-image: url('public/img/home-bg.jpg')">
+    <header class="masthead" style="background-image: url('public/img/error-bg.jpeg')">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
@@ -22,7 +22,9 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
 
-        error 404
+        <h1>Erreur 404</h1>
+
+        <p class="alert alert-danger">une erreur est survenue..si cela persiste veuillez contacter l'administrateur du site en lui expliquant ce que vous avez fait pour avoire ce resultat</p>
 
 </div>
       </div>

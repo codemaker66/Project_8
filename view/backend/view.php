@@ -1,35 +1,13 @@
 <?php $title = 'AdminPanel';
 
-  require_once(__DIR__ ."/../../controller/backend/controller.php");
-  $session = new USER();
-  if(!$session->is_loggedin())
-  {
-    // session no set redirects to login page
-    $session->redirect('../../index.php');
-  }
 ?>
 
 <?php ob_start(); ?>
 
-<!-- Page Header -->
-    <header class="masthead" style="background-image: url('public/img/home-bg.jpg')">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
-              <h1>Clean Blog</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
   <!-- Main Content -->
     <div class="container">
       <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="col-lg-10 col-md-10 mx-auto">
 
           <?php 
   //show message from add / edit page
@@ -37,19 +15,29 @@
     echo '<h3>Post '.$_GET['status'].'.</h3>'; 
   } 
   ?>
-     
+
+      <?php
+if ($req->rowCount() == 0) {?>
+  <p style="text-align: center;">there are no article to moderate at the moment</p>
+<?php
+}
+else
+{ ?>
+
+     <div class="table-responsive">
      <table class="table table-bordered">
   <thead>
     <tr>
       <th scope="col">id</th>
       <th scope="col">title</th>
       <th scope="col">creation_date</th>
+      <th scope="col">edit_date</th>
       <th scope="col">edit</th>
       <th scope="col">delete</th>
     </tr>
   </thead>
   <tbody>
-      <?php
+<?php
 while ($data = $req->fetch())
 {
 ?>
@@ -57,8 +45,16 @@ while ($data = $req->fetch())
       <th scope="row"><?= $data['id']; ?></th>
       <td><?= $data['title']; ?></td>
       <td><?= $data['creation_date_fr']; ?></td>
-      <td><a href="javascript:delpost('<?php echo $data['id'];?>')">Delete</a></td>
-      <td><a href="admin.php?action=update&amp;id=<?php echo $data['id'];?>">Edit</a></td>
+      <td><?php if ($data['edit_date_fr'] == NULL) {
+               echo "pas de mis a jour";
+              
+            }
+            else{
+               echo $data['edit_date_fr'];
+          
+            }?></td>
+      <td><a class="btn btn-warning" href="admin.php?action=update&amp;id=<?php echo $data['id'];?>">Edit</a></td>
+      <td><a class="btn btn-danger" href="#" onclick="delpost('<?php echo $data['id'];?>', '<?php echo $data['title'];?>');return false;">Delete</a></td>
     </tr>
       <?php
 } 
@@ -66,12 +62,13 @@ $req->closeCursor();
 ?>   
   </tbody>
 </table>
+</div>
 <?php
 echo '<p align="center">Page : '; //Pour l'affichage, on centre la liste des pages
-for($i=1; $i<=$nombreDePages; $i++) //On fait notre boucle
+for($i=1; $i<=$numberOfPages; $i++) //On fait notre boucle
 {
      //On va faire notre condition
-     if($i==$pageActuelle) //Si il s'agit de la page actuelle...
+     if($i==$currentPage) //Si il s'agit de la page actuelle...
      {
          echo ' [ '.$i.' ] '; 
      }  
@@ -81,6 +78,7 @@ for($i=1; $i<=$nombreDePages; $i++) //On fait notre boucle
      }
 }
 echo '</p>';
+}
 ?>
 
 

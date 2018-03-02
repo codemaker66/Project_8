@@ -1,30 +1,17 @@
 <?php $title = 'AdminPanel';
 
-  require_once(__DIR__ ."/../../controller/backend/controller.php");
+  require_once(__DIR__ ."/../../model/backend/UserModel.php");
   $session = new USER();
   if(!$session->is_loggedin())
   {
     // session no set redirects to login page
-    $session->redirect('../../index.php');
+    $session->redirect('index.php');
   }
 ?>
 
 <?php ob_start(); ?>
 
-<!-- Page Header -->
-    <header class="masthead" style="background-image: url('public/img/home-bg.jpg')">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
-              <h1>Clean Blog</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
+
 
   <!-- Main Content -->
     <div class="container">
@@ -35,19 +22,22 @@
 
   <?php if(isset($error)){
     foreach($error as $error){
-      echo '<p class="error">'.$error.'</p>';
+      echo '<p class="alert alert-danger">'.$error.' !!</p>';
     }
   } ?>
 
   <form action='' method='post'>
-
-    <p><label>Title</label><br />
-    <input type='text' name='postTitle' value='<?php if(isset($error)){ echo $_POST['postTitle'];}?>'></p>
-
-    <p><label>Content</label><br />
-    <textarea name='postCont' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['postCont'];}?></textarea></p>
-
-    <p><input type='submit' name='submit' value='Submit'></p>
+    <div class="form-group">
+    <label>Title</label>
+    <input class="form-control" type='text' name='postTitle' value='<?php if(isset($error)){ echo $_POST['postTitle'];}?>'>
+  </div>
+    <div class="form-group">
+    <label>Content</label>
+    <textarea name='postCont' cols='60' rows='10'><?php if(isset($error)){ echo $_POST['postCont'];}?></textarea>
+  </div>
+    <div class="form-group">
+    <input class="btn btn-success" type='submit' name='submit' value='Submit'>
+  </div>
   </form>
 
   

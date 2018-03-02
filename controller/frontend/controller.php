@@ -1,76 +1,81 @@
 <?php
 
-require_once(__DIR__ . "/../../model/frontend/model.php");
+require(__DIR__ . "/../../model/frontend/model.php");
 
 
-class Controller extends Model {
+class Controller {
+
+    private $_model;
+
+    public function __construct()
+    {
+      
+      $obj = new Model();
+      $this->_model = $obj;
+
+    }
     
     public function listChapters()
     {
 
-        $messagesParPage=5; //Nous allons afficher 5 messages par page.
- 
-        $all = new Model();
-        $total = $all->getAll();
+        $chaptersPerPage=5; //Nous allons afficher 5 messages par page.
+     
+        $total = $this->_model->getAllRows();
 
-                //Nous allons maintenant compter le nombre de pages.
-        $nombreDePages=ceil($total/$messagesParPage);
+        //Nous allons maintenant compter le nombre de pages.
+        $numberOfPages=ceil($total/$chaptersPerPage);
 
-         
+             
         if(isset($_GET['page'])) // Si la variable $_GET['page'] existe...
         {
-             $pageActuelle=intval($_GET['page']);
-         
-             if($pageActuelle == 0) 
-             {
-                  
-                  header("Location: error.php");
-                  exit();
-             }
-             elseif ($pageActuelle>$nombreDePages) { // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
-               $pageActuelle=$nombreDePages;
-             }
+            $currentPage=intval($_GET['page']);
+               
+            if($currentPage == 0) 
+            {
+              header("Location: error.php");
+              exit();
+            }
+            elseif ($currentPage>$numberOfPages) { // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
+                     
+              $currentPage=$numberOfPages;
+            }
         }
         else // Sinon
         {
-             $pageActuelle=1; // La page actuelle est la n°1    
+          $currentPage=1; // La page actuelle est la n°1    
         }
 
-   
-        $premiereEntree=($pageActuelle-1)*$messagesParPage; // On calcul la première entrée à lire
+        $firstEntry=($currentPage-1)*$chaptersPerPage; // On calcul la première entrée à lire
 
-
-
-        $model = new Model();
-        $req = $model->getChapters($premiereEntree, $messagesParPage);
+        $req = $this->_model->getChapters($firstEntry, $chaptersPerPage);
 
         require('view/frontend/indexView.php');
+
     }
 
     public function listPosts()
     {
-        $model = new Model();
-        $req = $model->getChapter($_GET['id']);
-        $comments = $model->getComments($_GET['id']);
-        $approved = $model->getApprovedComments($_GET['id']);
+          
+        $req = $this->_model->getChapter($_GET['id']);
+        $comments = $this->_model->getComments($_GET['id']);
+        $approvedComments = $this->_model->getApprovedComments($_GET['id']);
 
         if ($req->rowCount() != 0)
-          {
-            $chapter = $req->fetch();
-             require('view/frontend/commentsView.php');
-          }
+        {
+          $chapter = $req->fetch();
+          require('view/frontend/commentsView.php');
+        }
+        else
+        {
+          require('view/frontend/error.php');
+        }
 
-          else
-          {
-            require('view/frontend/error.php');
-          }
-
-    }
+      }
 
     public function addComment($chapterId, $author, $comment)
     {
-        $model = new Model();
-        $affectedLines = $model->postComment($chapterId, $author, $comment);
+          
+        $affectedLines = $this->_model->postComment($chapterId, $author, $comment);
 
         if ($affectedLines === false) {
             die('Impossible d\'ajouter le commentaire !');
@@ -78,32 +83,24 @@ class Controller extends Model {
         else {
             header('Location: index.php?action=listPosts&id=' . $chapterId);
         }
-    }
+      }
 
     public function report($id, $chapterId)
     {
-        $model = new Model();
+          
+        $report = $this->_model->testComment($id);
 
-        $test = $model->testComments($id);
+        if ($report['report_nb']  == 4) {
+            
+            $this->_model->deleteComment($report['id']);
+            header('Location: index.php?action=listPosts&id=' . $chapterId);
+        }
 
-
-
-        if ($test['report_nb']  > 4) {
-          $model = new Model();
-          $test2 = $model->deleteComment($test['id']);
+        else{
+          
+          $this->_model->addReport($report['id']);
           header('Location: index.php?action=listPosts&id=' . $chapterId);
         }
-
-        else
-        {
-           $model = new Model();
-           $test3 = $model->addReport($test['id']);
-           header('Location: index.php?action=listPosts&id=' . $chapterId);
-        }
-
-
-
-
     }
     
 }

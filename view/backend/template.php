@@ -33,7 +33,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" target="_black" href="admin.php?action=admin">Administration</a>
+              <a class="nav-link" href="admin.php?action=admin">Administration</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="admin.php?action=add">create</a>
@@ -48,6 +48,21 @@
         </div>
       </div>
     </nav> 
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('public/img/admin-bg.jpg')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1>Clean Blog</h1>
+              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
       
           <?= $content ?>
 
@@ -69,15 +84,8 @@
 
     <!-- Custom scripts for this template -->
     <script src="public/js/clean-blog.min.js"></script>
-    <script language="JavaScript" type="text/javascript">
-  function delpost(id, title)
-  {
-    if (confirm("Are you sure you want to delete the article that have the id  '" + id + "'"))
-    {
-      window.location.href = 'admin.php?delpost=' + id;
-    }
-  }
-  </script>
+    <!--mon script personnele-->
+    <script src="public/js/customScript.js"></script>
     <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
   <script>
           tinymce.init({

@@ -33,10 +33,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="index.php">Home</a>
+              <a class="nav-link" href="index.php">Accueil</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="about.html">About</a>
+              <a class="nav-link" href="about.html">À propos</a>
             </li>
           </ul>
         </div>
@@ -50,8 +50,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <p class="copyright text-muted">Copyright &copy; Your Website 2018<br/><a href="admin.php?action=admin">admin</a></p>
-            
+            <p class="copyright text-muted">Copyright &copy; Your Website 2018<br/><a href="admin.php?action=admin">Interface d'administration</a></p> 
           </div>
         </div>
       </div>
