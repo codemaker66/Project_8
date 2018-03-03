@@ -11,7 +11,7 @@ tinymce.init({
 
   function delpost(id)
   {
-    if (confirm("Êtes-vous sûr de vouloir supprimer l'article associé à l'id '" + id + "' ?? car tout les commentaires associés (approuvés ou non) seront également supprimées"))
+    if (confirm("Êtes-vous sûr de vouloir supprimer l'article associé à l'id '" + id + "' définitivement ?? car tout les commentaires associés (approuvés ou non) seront également supprimées"))
     {
       window.location.href = 'admin.php?action=delpost&id=' + id;
     }
